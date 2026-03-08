@@ -21,9 +21,14 @@ type Config struct {
 var AppConfig *Config
 
 func LoadConfig() {
-	file, err := os.ReadFile("config.yml")
+	configPath := os.Getenv("CONFIG_FILE")
+	if configPath == "" {
+		configPath = "config.yml"
+	}
+
+	file, err := os.ReadFile(configPath)
 	if err != nil {
-		log.Fatalf("Error reading config file: %v", err)
+		log.Fatalf("Error reading config file (%s): %v", configPath, err)
 	}
 
 	AppConfig = &Config{}
